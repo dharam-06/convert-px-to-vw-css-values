@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel to VW Converter</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    // Function to convert pixel to vw
+    function convertPxToVw(pxValue, containerWidth) {
+        return (pxValue / containerWidth) * 100;
+    }
+
+    // Convert all pixel values to vw
+    function convertAllPxToVw() {
+        var containerWidth = $(window).width(); // Get container width (viewport width)
+
+        // Iterate through all elements
+        $('*').each(function() {
+            var $this = $(this);
+
+            // Get computed pixel values for width, height, margin, padding, etc.
+            var properties = ['width', 'height', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left', 'font-size'];
+
+            $.each(properties, function(index, property) {
+                var value = $this.css(property);
+                if (value && value.indexOf('px') !== -1) {
+                    var numericValue = parseFloat(value);
+                    var convertedValue = convertPxToVw(numericValue, containerWidth);
+                    $this.css(property, convertedValue + 'vw');
+                }
+            });
+        });
+    }
+
+    // Call the conversion function on page load
+    convertAllPxToVw();
+
+    // Optionally, you might want to call the conversion function when the window is resized
+    $(window).resize(function() {
+        convertAllPxToVw();
+    });
+});
+</script>
+</head>
+<body>
+
+<h1 style="font-size: 60px;">Test Box</h1>
+
+</body>
+</html>
